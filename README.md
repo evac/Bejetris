@@ -15,5 +15,6 @@ Push the gem by moving into it. Pull by holding down P while moving in the oppos
 You die when...
 ----------------------------------------
 1) You don't have any extra lives left when a heavy rock falls on top of you. (You can touch it from the side or from above, but do NOT be below one.)
+
 2) A column of gems overflow to the top.
 
