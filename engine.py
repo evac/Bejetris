@@ -4,8 +4,8 @@ import pyglet
 from pyglet.window import key
 from core import GameElement
 
-SCREEN_X = 800
-SCREEN_Y = 700
+SCREEN_X = 1000
+SCREEN_Y = 850
 
 game_window = pyglet.window.Window(SCREEN_X, SCREEN_Y)
 
@@ -54,6 +54,8 @@ def setup_images():
     TILE_HEIGHT = i.height
 
 class Board(object):
+    TICK = 0
+
     def __init__(self, width = 3, height = 3):
         self.width = width
         self.height = height
@@ -69,15 +71,11 @@ class Board(object):
 
         # Make a map with a stoneblock border and filled with grass
         game_map = []
-        inner_width = width-2
+        inner_width = width-1
         for i in range(height):
-            if i == 0 or i == height-1:
-                # On the boundaries
-                game_map.append(["Block"] * width)
-            else:
-                row = ["Block"] + (["GrassBlock"] * inner_width) + ["Block"]
-                game_map.append(row)
-        
+            row = ["StoneBlock"] + (["GrassBlock"] * inner_width)
+            game_map.append(row)
+
         self.base_board = game_map
         self.content_layer = []
         row = [ None ] * width
@@ -166,16 +164,18 @@ class Board(object):
                 if el:
                     self.draw_active(el.sprite, x, y)
 
-
 class Obstacle(GameElement):
     pass
 
 def update(dt):
     for el in update_list:
         el.update(dt)
+    
+    game.update()
 
 draw_list = []
 update_list = []
+
 
 @game_window.event
 def on_draw():
