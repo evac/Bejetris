@@ -6,8 +6,9 @@ import sys
 import random
 
 
-#### DO NOT TOUCH ####
 GAME_BOARD = None
+GAME_WIDTH = 8
+GAME_HEIGHT = 8
 DEBUG = False
 KEYBOARD = None
 PLAYER = None
@@ -15,12 +16,8 @@ TICK = 0
 MATCHES = []
 POINTS = 0
 LEVEL = 1
-######################
 
-GAME_WIDTH = 8
-GAME_HEIGHT = 8
-
-#### Put class definitions here ####
+#### Class Definitions ####
 class Character(GameElement):
     IMAGE = "Cat"
     ALIVE = True
@@ -226,6 +223,7 @@ class GraveStone(GameElement):
 ####   End class definitions    ####
 
 
+# Check for rows of 3 or more matching gems #
 def count_gems(row):
     matched_gems = []
     counted_gems = []
@@ -248,6 +246,7 @@ def count_gems(row):
     return matched_gems
 
 
+# Helper to get matches #
 def match_gems():
     all_gems = []
     matched_gems = []
@@ -275,7 +274,7 @@ def match_gems():
 
     return matched_gems
 
-
+# Add points for cleared gems #
 def collect_gems(matches):
     global POINTS
 
@@ -284,6 +283,7 @@ def collect_gems(matches):
         match.REMOVED = True
         match.remove()
 
+# Check for game over if gems overflow to top #
 def check_overflow(column):
     spaces = 0
     for el in column:
@@ -295,7 +295,7 @@ def check_overflow(column):
         msg = "You lasted %d seconds and collected %d gems before your gems overflowed." %(TICK/10, POINTS)
         GAME_BOARD.draw_msg(msg)
 
-
+# randomly generate an item to drop #
 def random_drop():
     resource = None
     drop = random.randint(1, 100)
@@ -313,12 +313,14 @@ def random_drop():
 
     return resource
 
+# place drop randomly
 def set_random_drop():
     drop = random_drop()
     pos = random.randint(1, GAME_WIDTH - 1)
     GAME_BOARD.register(drop)
     GAME_BOARD.set_el(pos, 0, drop)
 
+# player status announcements
 def display_player_info():
     for i in range(GAME_HEIGHT - 1, -1, -1):
         if GAME_HEIGHT - PLAYER.LIVES - 1 < i:
@@ -379,6 +381,7 @@ def keyboard_handler():
 
                     GAME_BOARD.set_el(next_x, next_y, PLAYER)
 
+# set speed of game
 def update():
     global MATCHES
     global TICK
